@@ -1,0 +1,348 @@
+-- 1. How many teams have played in the world cup (5 years)?
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team,
+	points
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team,
+	points
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team,
+	points
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team,
+	points
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team,
+	points
+from fifa_2018
+	)
+	
+SELECT count(DISTINCT(team)) as total_number_of_teams
+FROM world_cup;
+
+
+-- 2. Get the total games played, win, loss, goals for/against.
+
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2018
+	)
+	
+SELECT DISTINCT(team) as country, sum(win) as wins, sum(loss) as losses, 
+	sum(games_played)as games, sum(goals_for)as goals_scored, sum(goals_against)as goals_conceded
+FROM world_cup
+group by country
+order by wins asc, goals_scored asc;
+
+
+-- 3. The country with the highest and lowest appearances at the world cup in the last 5 years?
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2018
+	)
+	
+--Highest--
+select team, count(worldcupyear) as appearances
+from world_cup
+group by team
+order by appearances desc;
+
+-- 4. The country with the highest and lowest games played?
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2018
+	)
+	
+select team, sum(games_played)as total_number_of_matches_played
+from world_cup
+group by team
+order by total_number_of_matches_played desc;
+
+-- 5. The country with the highest and lowest games won ?
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2018
+	)
+	
+select team, sum(win)as total_wins
+from world_cup
+group by team
+order by total_wins desc;
+
+--6. The country with the highest and lowest games lost ?
+
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2018
+	)
+--Highest--	
+select team, sum(loss)as total_losses
+from world_cup
+group by team
+order by total_losses desc;
+
+--Lowest--
+select team, sum(loss)as total_losses
+from world_cup
+group by team
+order by total_losses asc;
+
+
+-- 7. The country with the highest and lowest goals_for ?
+Highest - Germany
+Lowest - Trinidad and Tobago
+
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2018
+	)
+
+--Highest--	
+select team, sum(goals_for)as total_goals_scored
+from world_cup
+group by team
+order by total_goals_scored desc;
+
+--Lowest--
+select team, sum(goals_for)as total_goals_scored
+from world_cup
+group by team
+order by total_goals_scored asc;
+
+
+-- 8. The country with the highest and lowest goals against ?
+Hoghest - Brazil
+Lowest - Peru
+
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against
+from fifa_2018
+	)
+
+--Highest--
+select team, sum(goals_against)as total_goals_conceded
+from world_cup
+group by team
+order by total_goals_conceded desc;
+
+--Lowest--	
+select team, sum(goals_against)as total_goals_conceded
+from world_cup
+group by team
+order by total_goals_conceded asc;
+
+
+-- 9. The country with the highest and lowest goals difference ?
+Highest - Germany
+Lowest - Saudi Arabia
+
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2018
+	)
+	
+
+--Highest--
+select team, sum(goals_difference)as total_goals_difference
+from world_cup
+group by team
+order by total_goals_difference desc;
+
+--Lowest--
+select team, sum(goals_difference)as total_goals_difference
+from world_cup
+group by team
+order by total_goals_difference asc;
+
+--10. The country with the highest and lowest points ?
+WITH
+	world_cup AS(
+	select 'wc2002' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2002
+Union all
+select 'wc2006' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2006
+union all
+select 'wc2010' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2010
+union all
+select 'wc2014' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2014
+union all
+select 'wc2018' AS worldcupyear,
+	team, points, games_played, win, loss, goals_for, goals_against, goals_difference
+from fifa_2018
+	)
+	
+--Highest--
+select team, sum(points)as total_points
+from world_cup
+group by team
+order by total_points desc;
+
+--Lowest--
+select team, sum(points)as total_points
+from world_cup
+group by team
+order by total_points asc;
+
+
+
